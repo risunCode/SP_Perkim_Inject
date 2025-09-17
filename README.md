@@ -37,8 +37,8 @@ Koneksi internet stabil
 
 1. **Clone/Download project**
 ```bash
-git clone <repository-url>
-cd FakeDataInject
+git clone https://github.com/risunCode/SP_Perkim_Inject.git
+cd SP_Perkim_Inject
 ```
 
 2. **Install dependencies**
@@ -144,36 +144,7 @@ Health Check: http://localhost:3000/api/health
     summary: object
   }
 }
-```
-
-## 🏗️ Architecture
-
-### File Structure
-```
-FakeDataInject/
-├── inject.js              # Core injection logic (238 lines)
-├── server.js              # Express server (126 lines)
-├── public/                # Frontend assets
-│   ├── index.html         # Main interface (299 lines)
-│   ├── testing.html       # API testing page (309 lines)
-│   ├── script.js          # Main client logic (625 lines)
-│   ├── testing.js         # API testing logic (848 lines)
-│   └── styles.css         # Optimized styles (148 lines)
-├── package.json           # Dependencies
-├── README.md              # Documentation
-└── README_stop.md         # Project completion summary
-```
-
-### API Endpoints
-
-| Method | Endpoint | Description | Features |
-|--------|----------|-------------|----------|
-| GET | `/` | Main web interface | Single injection UI |
-| GET | `/testing` | API testing & batch ops | Multi-testing UI |
-| GET | `/api/health` | Server health check | Uptime, status info |
-| GET | `/api/defaults` | Get default payload | Data template |
-| POST | `/api/inject` | Survey data injection | Main injection endpoint |
-
+```  
 ### Core Features Deep Dive
 
 #### 🎲 Smart Data Randomization
@@ -195,13 +166,7 @@ FakeDataInject/
 - **Progress Tracking**: Real-time progress dengan step-by-step breakdown
 - **Result Management**: Latest + expandable full results
 - **Export Functionality**: JSON export dengan comprehensive data
-
-#### 🌙 Dark Mode Implementation
-- **Tailwind Integration**: Class-based dark mode
-- **localStorage Persistence**: Theme preference tersimpan
-- **Smooth Transitions**: Animated theme switching
-- **Cross-page Sync**: Konsisten antara main dan testing page
-
+ 
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -222,27 +187,7 @@ const CONFIG = {
   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
 };
 ```
-
-## 📱 UI/UX Features
-
-### Main Interface
-- **Form Sections**: Personal Info, Survey Questions, Feedback
-- **Smart Validation**: Real-time validation dengan visual feedback
-- **Button Actions**: Multiple randomization options
-- **Results Display**: Detailed injection results dengan expand/collapse
-
-### Testing Interface  
-- **Control Panels**: Batch operations + API testing terpisah
-- **Console Integration**: Real-time logging dengan syntax highlighting
-- **Progress Management**: Current step + expandable history
-- **Results Analysis**: Success/failure breakdown dengan export
-
-### Design System
-- **Color Palette**: Blue primary, purple secondary, semantic colors
-- **Typography**: Inter font family untuk readability
-- **Spacing**: Consistent 8px grid system
-- **Components**: Reusable card, button, dan form components
-
+ 
 ## ⚠️ Troubleshooting
 
 ### Common Issues
@@ -272,49 +217,7 @@ NODE_ENV=development node server.js
 curl -v http://localhost:3000/api/health
 curl -v http://localhost:3000/api/defaults
 ```
-
-## 🛠️ Development
-
-### Adding New Features
-
-**1. Backend Enhancement (server.js/inject.js):**
-```javascript
-// Tambah endpoint baru
-app.get('/api/new-feature', (req, res) => {
-  // Implementation
-});
-```
-
-**2. Frontend Enhancement (script.js/testing.js):**
-```javascript
-// Tambah method baru
-async testNewFeature() {
-  // Implementation dengan console logging
-  this.logToConsole('Testing new feature...', 'info');
-}
-```
-
-**3. UI Enhancement (HTML files):**
-```html
-<!-- Tambah dark mode support -->
-<div class="bg-white dark:bg-gray-800 rounded-lg p-4">
-  <h3 class="text-gray-900 dark:text-white">Title</h3>
-</div>
-```
-
-### Testing Locally
-```bash
-# Start server dengan auto-reload
-nodemon server.js
-
-# Test endpoints
-curl http://localhost:3000/api/health
-curl -X POST http://localhost:3000/api/inject -H "Content-Type: application/json" -d '{}'
-
-# Performance testing
-time curl http://localhost:3000/api/defaults
-```
-
+  
 ## 📈 Performance Optimizations
 
 ### Code Optimizations
@@ -369,17 +272,7 @@ time curl http://localhost:3000/api/defaults
 - [ ] **API Gateway**: Rate limiting dan monitoring
 
 ---
-
-## 🎉 Conclusion
-
-Versi optimized ini memberikan pengalaman yang jauh lebih baik dengan:
-
-- **40%+ Code Reduction** tanpa mengurangi fungsionalitas
-- **Modern UI/UX** dengan dark mode dan responsive design  
-- **Advanced Testing** dengan real-time console dan batch operations
-- **Better Performance** dengan optimized code structure
-- **Enhanced Debugging** dengan detailed logging dan error handling
-
+ 
 **🚀 Happy Testing! Built with ❤️ for optimal surveying experience**
 
-*Last updated: December 2024*
+*Last updated: September 2025*
