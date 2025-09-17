@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekampadi Perkim Inject Tool - Data Injection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#8B5CF6',
+                        success: '#10B981',
+                        danger: '#EF4444',
+                        warning: '#F59E0B'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen font-sans transition-all duration-300" id="appBody">
+    <!-- Navigation -->
+    <nav class="nav-bg backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-database text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        Sekampadi Inject
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/testing" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 dark:bg-blue-800 dark:hover:bg-blue-700 text-blue-700 dark:text-blue-300 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-vial mr-2"></i>
+                        API Testing & Batch Operation
+                    </a>
+                    
+                    <!-- Theme Toggle Dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleThemeDropdown()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center">
+                            <i class="fas fa-palette text-gray-600 dark:text-gray-300 mr-2" id="themeIcon"></i>
+                            <i class="fas fa-chevron-down text-gray-600 dark:text-gray-300 text-xs"></i>
+                        </button>
+                        <div id="themeDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+                            <div class="p-2">
+                                <button onclick="setTheme('pink')" class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 mr-3 ring-2 ring-pink-400"></div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Pink Solarized</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Warm pink gradient (Default)</div>
+                                    </div>
+                                </button>
+                                <button onclick="setTheme('white')" class="w-full flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-50 to-white border border-gray-200 mr-3"></div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">White Solarized</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Clean white theme</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
+                        <div id="statusIndicator" class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full mb-6">
+                <i class="fas fa-rocket text-white text-2xl"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Survey Data Injector</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Tool untuk menginjeksi data survey palsu ke sistem Sekampadi Kalbar dengan antarmuka yang modern dan user-friendly
+            </p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 mb-8">
+            <form id="injectionForm" class="space-y-8">
+                <!-- Personal Information -->
+                <div class="border-b border-gray-200 pb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                            <i class="fas fa-user mr-3 text-primary"></i>
+                            Informasi Personal
+                        </h2>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="sekampadiInject.loadDefaults()" 
+                                    class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center">
+                                <i class="fas fa-download mr-2"></i>
+                                Load Default
+                            </button>
+                            <button type="button" onclick="sekampadiInject.randomizePersonalInfo()" 
+                                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center">
+                                <i class="fas fa-dice mr-2"></i>
+                                Randomize
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Alert -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-amber-500 mt-0.5 mr-3"></i>
+                            <div class="text-sm text-amber-700">
+                                <p class="font-medium mb-1">Fixed Values:</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-1 text-xs">
+                                    <span>• <strong>OPD:</strong> 35 (Fixed)</span>
+                                    <span>• <strong>Layanan:</strong> 100 (Fixed)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Gender -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Jenis Kelamin</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="jk" value="pr" checked class="text-primary focus:ring-primary">
+                                    <span class="ml-2 text-gray-700 dark:text-gray-300">Perempuan</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="radio" name="jk" value="lk" class="text-primary focus:ring-primary">
+                                    <span class="ml-2 text-gray-700 dark:text-gray-300">Laki-laki</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Age -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Usia</label>
+                            <input type="number" name="usia" min="10" max="120" 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Nomor Telepon</label>
+                            <input type="tel" name="telpon" placeholder="08xxxxxxxxxx" 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
+                        </div>
+
+                        <!-- Job -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pekerjaan</label>
+                            <input type="number" name="pekerjaan" min="1" max="10" 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        </div>
+
+                        <!-- Education -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Pendidikan</label>
+                            <input type="number" name="pendidikan" min="1" max="10" 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        </div>
+
+                        <!-- Service Score -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                Skor Layanan
+                                <span class="text-xs text-amber-600 dark:text-amber-400 ml-2 bg-amber-100 dark:bg-amber-900 px-2 py-1 rounded">Fixed: 100</span>
+                            </label>
+                            <input type="number" name="layanan" value="100" readonly
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        </div>
+
+                        <!-- OPD -->
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                OPD
+                                <span class="text-xs text-amber-600 dark:text-amber-400 ml-2 bg-amber-100 dark:bg-amber-900 px-2 py-1 rounded">Fixed: 35</span>
+                            </label>
+                            <input type="number" name="opd" value="35" readonly
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey Questions -->
+                <div class="border-b border-gray-200 pb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
+                        <i class="fas fa-clipboard-check mr-3 text-primary"></i>
+                        Penilaian Survey (Skala 1-4)
+                    </h2>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-3"></i>
+                            <div class="text-sm text-blue-700">
+                                <p class="font-medium mb-1">Skala Penilaian (Default: 4 - Sangat Baik):</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                                    <span><strong>1</strong> = Tidak Baik</span>
+                                    <span><strong>2</strong> = Kurang Baik</span>
+                                    <span><strong>3</strong> = Baik</span>
+                                    <span><strong>4</strong> = Sangat Baik ⭐</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 question-grid" id="questionsContainer">
+                        <!-- Questions will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Feedback -->
+                <div class="pb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
+                        <i class="fas fa-comment-dots mr-3 text-primary"></i>
+                        Kritik & Saran
+                    </h2>
+                    <textarea name="kritik_saran" rows="4" placeholder="Masukkan kritik dan saran..." 
+                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button type="button" onclick="sekampadiInject.randomizeAllData()" 
+                            class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium rounded-lg transition-all flex items-center justify-center btn-shimmer">
+                        <i class="fas fa-dice mr-2"></i>
+                        Randomize All Data
+                    </button>
+                    
+                    <a href="/testing" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-medium rounded-lg transition-all flex items-center justify-center btn-shimmer">
+                        <i class="fas fa-layer-group mr-2"></i>
+                        Batch Operations
+                    </a>
+                    
+                    <button type="submit" id="injectBtn" 
+                            class="px-8 py-4 bg-gradient-to-r from-primary to-secondary hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg flex items-center justify-center btn-shimmer">
+                        <i class="fas fa-rocket mr-2"></i>
+                        <span id="injectBtnText">Inject Data</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
+                <i class="fas fa-chart-bar mr-3 text-primary"></i>
+                Hasil Injeksi
+            </h2>
+            <div id="resultsContent"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 mt-16 py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-600 dark:text-gray-300">
+                <i class="fas fa-code mr-2"></i>
+                Sekampadi Inject Tool - Built with ❤️ for testing purposes
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                ⚠️ Tool ini hanya untuk keperluan testing. Gunakan dengan bijak dan bertanggung jawab.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p class="text-gray-700 dark:text-gray-200 font-medium">Sedang menginjeksi data...</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Mohon tunggu sebentar</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <script>
+        // Theme Management System
+        const themeManager = {
+            currentTheme: localStorage.getItem('theme') || 'pink',
+            
+            themes: {
+                pink: {
+                    name: 'Pink Solarized',
+                    icon: 'fas fa-heart',
+                    description: 'Warm pink gradient (Default)'
+                },
+                white: {
+                    name: 'White Solarized', 
+                    icon: 'fas fa-sun',
+                    description: 'Clean white theme'
+                }
+            },
+            
+            init() {
+                this.applyTheme(this.currentTheme);
+                this.updateThemeIcon();
+                this.setupClickOutside();
+            },
+            
+            applyTheme(theme) {
+                const html = document.documentElement;
+                
+                // Remove all theme classes and attributes
+                html.classList.remove('dark');
+                html.removeAttribute('data-theme');
+                
+                // Apply theme
+                if (theme === 'white') {
+                    html.setAttribute('data-theme', 'white');
+                } else {
+                    // Pink is default (no attribute needed, uses :root)
+                }
+                
+                this.currentTheme = theme;
+                localStorage.setItem('theme', theme);
+                this.updateThemeIcon();
+            },
+            
+            updateThemeIcon() {
+                const icon = document.getElementById('themeIcon');
+                if (icon) {
+                    const themeConfig = this.themes[this.currentTheme];
+                    icon.className = `${themeConfig.icon} text-gray-600 dark:text-gray-300 mr-2`;
+                }
+            },
+            
+            setupClickOutside() {
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('themeDropdown');
+                    const button = e.target.closest('[onclick="toggleThemeDropdown()"]');
+                    if (!button && dropdown && !dropdown.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            }
+        };
+        
+        function toggleThemeDropdown() {
+            const dropdown = document.getElementById('themeDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function setTheme(theme) {
+            themeManager.applyTheme(theme);
+            document.getElementById('themeDropdown').classList.add('hidden');
+        }
+        
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            themeManager.init();
+        });
+    </script>
+</body>
+</html>
